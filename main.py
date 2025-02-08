@@ -26,3 +26,16 @@ class Money:
 
     def __str__(self):
         return f"Ваше состояние составляет {self.dollars} долларов {self.cents} центов"
+
+
+bill = Money(101, 99)
+assert isinstance(bill, Money)
+
+print(bill)  # Ваше состояние составляет 101 долларов 99 центов
+print(bill.dollars, bill.cents)  # 101 99
+bill.dollars = 666
+print(bill)  # Ваше состояние составляет 666 долларов 99 центов
+bill.cents = 12
+print(bill)  # Ваше состояние составляет 666 долларов 12 центов
+assert bill.total_cents == 66612
+assert list(bill.__dict__.keys()) == ['total_cents']
