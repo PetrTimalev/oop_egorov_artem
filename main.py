@@ -10,3 +10,10 @@ class Person:
     @property
     def age(self):
         return self._age
+
+
+s = Person('Petr', 40)
+# s.age = 48
+
+print(s.age)
+print(s.name)
