@@ -1,76 +1,36 @@
-class Money:
-    def __init__(self, dollars, cents):
-        """
-        Конструктор класса Money.
-        Принимает два аргумента: dollars (доллары) и cents (центы).
-        Сохраняет общее количество центов в атрибуте total_cents.
-        """
-        self.total_cents = dollars * 100 + cents  # Преобразуем доллары и центы в общее количество центов
+class Ingredient:
+    def __init__(self, name, weight, price):
+        self.name = name
+        self.weight = weight
+        self.price = price  # стоимость за 100гр
 
     @property
-    def dollars(self):
-        """
-        Свойство-геттер для получения количества долларов.
-        Возвращает количество долларов, вычисляя его из общего количества центов.
-        """
-        return self.total_cents // 100  # Делим total_cents на 100, чтобы получить доллары
+    def cost(self):
+        n = (self.weight / 100) * self.price
+        return n
 
-    @dollars.setter
-    def dollars(self, value):
-        """
-        Свойство-сеттер для установки количества долларов.
-        Принимает целое неотрицательное число.
-        Обновляет total_cents, сохраняя текущее количество центов.
-        Если значение некорректно, выводит сообщение "Error dollars".
-        """
-        if isinstance(value, int) and value >= 0:
-            # Обновляем total_cents, сохраняя текущие центы
-            self.total_cents = value * 100 + (self.total_cents % 100)
+
+class Pizza:
+    def __init__(self, name, ingredients=None):
+        self.name = name
+        # в пицца передается объект <__main__.Ingredient object at 0x10ad3bcb0> из ингредиентов
+        if ingredients is None:
+            self.ingredients = []
         else:
-            print('Error dollars')  # Сообщение об ошибке, если значение некорректно
+            self.ingredients = ingredients
 
     @property
-    def cents(self):
-        """
-        Свойство-геттер для получения количества центов.
-        Возвращает количество центов, вычисляя его из общего количества центов.
-        """
-        return self.total_cents % 100  # Остаток от деления total_cents на 100 — это центы
+    def cost(self):
 
-    @cents.setter
-    def cents(self, value):
-        """
-        Свойство-сеттер для установки количества центов.
-        Принимает целое неотрицательное число меньше 100.
-        Обновляет total_cents, сохраняя текущее количество долларов.
-        Если значение некорректно, выводит сообщение "Error cents".
-        """
-        if isinstance(value, int) and 0 <= value < 100:
-            # Обновляем total_cents, сохраняя текущие доллары
-            self.total_cents = (self.total_cents // 100) * 100 + value
-        else:
-            print('Error cents')  # Сообщение об ошибке, если значение некорректно
-
-    def __str__(self):
-        """
-        Метод для строкового представления объекта.
-        Возвращает строку в формате: "Ваше состояние составляет {dollars} долларов {cents} центов".
-        Использует свойства dollars и cents для получения текущих значений.
-        """
-        return f'Ваше состояние составляет {self.dollars} долларов {self.cents} центов'
+        total_cost = sum(ingredient.cost for ingredient in self.ingredients)  # Сумма стоимости ингредиентов
+        return total_cost + 100  # Добавляем 100 рублей за основу
 
 
-bill = Money(101, 99)
-print(bill.__doc__)
+chicken = Ingredient('chicken', 200, 80)
+mozzarella = Ingredient('mozzarella', 300, 110)
+sauce_bbq = Ingredient('sauce bbq', 150, 70)
+red_onion = Ingredient('red onion', 150, 50)
+barbecue = Pizza('BBQ', [chicken, mozzarella, sauce_bbq, red_onion])
 
-
-# assert isinstance(bill, Money)
-#
-# print(bill)  # Ваше состояние составляет 101 долларов 99 центов
-# print(bill.dollars, bill.cents)  # 101 99
-# bill.dollars = 666
-# print(bill)  # Ваше состояние составляет 666 долларов 99 центов
-# bill.cents = 12
-# print(bill)  # Ваше состояние составляет 666 долларов 12 центов
-# assert bill.total_cents == 66612
-# assert list(bill.__dict__.keys()) == ['total_cents']
+print('Стоимость пиццы BBQ', barbecue.cost)
+print(chicken)
