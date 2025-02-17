@@ -1,13 +1,22 @@
-class AverageAccumulator:
-    def __init__(self):
-        self.data = []
-
-    def __call__(self, new_value):
-        self.data.append(new_value)
-        return sum(self.data) / len(self.data)
+import time
 
 
-avg = AverageAccumulator()
-print(avg(10))
-print(avg(20))
-print(avg(30))
+class Timer:
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self):
+        start = time.time()
+        self.func()
+        end = time.time()
+        delta_time = end - start
+        print(f'Время работы программы {delta_time}')
+
+
+@Timer
+def calculate():
+    for i in range(0, 10000000, 2):
+        2**100
+
+
+calculate()
